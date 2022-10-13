@@ -115,20 +115,20 @@ func AStat(start, end *area.Node, roadTyp string, obstacleList ...string) (road 
 	if back {
 		road = append(road, end)
 		newArea = area.CreateArea(start.Area.X, start.Area.Y)
-
 		for i := 0; i < start.Area.X; i++ {
 			for j := 0; j < start.Area.Y; j++ {
 				n, _ := start.Area.GetNode(i, j)
 				newArea.SetNode(i, j, n.Typ)
 			}
 		}
-
+		newArea.SetNode(end.X, end.Y, "e")
 		for {
 			f, ok := linkList[end]
 			f.Typ = roadTyp
 			road = append(road, f)
 			newArea.SetNode(f.X, f.Y, roadTyp)
 			if f.ID == start.ID || !ok {
+				newArea.SetNode(f.X, f.Y, "s")
 				break
 			}
 			end = f
