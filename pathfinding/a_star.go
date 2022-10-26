@@ -27,9 +27,8 @@ import (
 	"container/heap"
 	"math"
 
-	"k8s.io/utils/strings/slices"
-
 	"github.com/guojia99/go-num/pathfinding/area"
+	"github.com/guojia99/go-num/utils"
 )
 
 type anode struct {
@@ -83,7 +82,7 @@ func AStat(start, end *area.Node, roadTyp string, obstacleList ...string) (road 
 			if _, ok := closeDict[val]; ok {
 				continue
 			}
-			if slices.Contains(obstacleList, val.Typ) {
+			if utils.Contains(obstacleList, val.Typ) {
 				continue
 			}
 			if _, ok := openDict[val]; ok {
