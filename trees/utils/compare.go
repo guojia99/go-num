@@ -22,6 +22,9 @@ const (
 )
 
 func Compare(a, b interface{}) ComparingResult {
+	if a == nil || b == nil {
+		return Different
+	}
 	typ, bTyp := getValueType(a), getValueType(b)
 	if typ != bTyp || typ == NotCompare || bTyp == NotCompare {
 		return Different

@@ -1,11 +1,11 @@
 package trees
 
-import "fmt"
-
 type Tree interface {
 	Search(node *Node, key interface{}) (index int, found bool)
 	Get(key interface{}) (value interface{}, found bool)
+	GetNode(key interface{}) (node *Node)
 	Set(key interface{}, value interface{})
+	Sets([]*NodeData)
 	Remove(key interface{})
 	Clear()
 
@@ -15,10 +15,10 @@ type Tree interface {
 	Right() *Node
 
 	Empty() bool
-	Size() int
+	Length() int
 	Height() int
 
-	fmt.Stringer
+	Println() string
 }
 
-func NewBtree(deep int) Tree { return newBtree(deep) }
+func NewBtree(deep int64) Tree { return newBtree(deep) }

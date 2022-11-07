@@ -1,79 +1,75 @@
 package trees
 
 type NodeData struct {
-	Key   interface{} `json:"k"`
-	Value interface{} `json:"v"`
+	Key   interface{} `json:"k,omitempty"`
+	Value interface{} `json:"v,omitempty"`
 }
 
 type Node struct {
-	Parent   *Node       `json:"p"`
-	Children []*Node     `json:"c"`
-	Data     []*NodeData `json:"d"`
-
-	Back int8
+	Parent   *Node       `json:"p,omitempty"`
+	Children []*Node     `json:"c,omitempty"`
+	Data     []*NodeData `json:"d,omitempty"`
+	Back     int64       `json:"b,omitempty"`
 }
 
-func (n *Node) Size() int {
-	if n == nil {
+func (x *Node) Size() int {
+	if x == nil {
 		return 0
 	}
 	size := 1
-	for _, child := range n.Children {
+	for _, child := range x.Children {
 		size += child.Size()
 	}
 	return size
 }
 
-func (n *Node) Height() int {
-	node := n
+func (x *Node) Height() int {
+	node := x
 	height := 0
-	for ; n != nil; node = node.Children[0] {
+	for ; x != nil; node = node.Children[0] {
 		height++
-		if len(n.Children) == 0 {
+		if len(x.Children) == 0 {
 			break
 		}
 	}
 	return height
 }
 
-func (n *Node) AddOtherNodeChildren(otherNode *Node) {
-	n.SetChildrenList(otherNode.Children)
+func (x *Node) AddOtherNodeChildren(otherNode *Node) {
+	x.SetChildrenList(otherNode.Children)
 }
 
-func (n *Node) prependOtherNodeChildren(otherNode *Node) {
+func (x *Node) prependOtherNodeChildren(otherNode *Node) {
 	children := append([]*Node(nil), otherNode.Children...)
-	n.SetChildrenList(children)
+	x.SetChildrenList(children)
 }
 
-func (n *Node) SetChildrenList(nodes []*Node) {
-	if n.Children == nil {
-		n.Children = make([]*Node, 0)
-	}
-	n.Children = append(n.Children, nodes...)
+func (x *Node) SetChildrenList(nodes []*Node) {
+	x.Children = append([]*Node(nil), nodes...)
 	for _, node := range nodes {
-		node.Parent = n
+		node.Parent = x
 	}
 }
 
-func (n *Node) AddData(data ...*NodeData) {
-	n.Data = append(n.Data, data...)
+func (x *Node) AddData(data ...*NodeData) {
+	x.Data = append(x.Data, data...)
 }
 
-func (n *Node) AddChildren(nodes ...*Node) {
-	n.Children = append(n.Children, nodes...)
+func (x *Node) AddChildren(nodes ...*Node) {
+	x.Children = append(x.Children, nodes...)
 }
 
-func (n *Node) DeleteChildren(index int) {
-	if index > len(n.Children) {
+func (x *Node) DeleteChildren(index int) {
+	if index > len(x.Children) {
 		return
 	}
-	copy(n.Children[index:], n.Children[index+1:])
-	n.Children[len(n.Children)-1] = nil
-	n.Children = n.Children[:len(n.Children)-1]
+	copy(x.Children[index:], x.Children[index+1:])
+	x.Children[len(x.Children)-1] = nil
+	x.Children = x.Children[:len(x.Children)-1]
 }
 
-func (n *Node) deleteData(index int) {
-	copy(n.Data[index:], n.Data[index+1:])
-	n.Data[len(n.Data)-1] = nil
-	n.Data = n.Data[:len(n.Data)-1]
+func (x *Node) deleteData(index int) {
+	copy(x.Data[index:], x.Data[index+1:])
+	x.Data[len(x.Data)-1] = nil
+	x.Data = x.Data[:len(x.Data)-1]
 }
