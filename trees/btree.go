@@ -376,6 +376,7 @@ func (x *BTree) leftBrother(node *Node, key interface{}) (brother *Node, brother
 func (x *BTree) rightBrother(node *Node, key interface{}) (brother *Node, brotherIndex int) {
 	if node.Parent != nil {
 		brotherIndex, _ = x.Search(node.Parent, key)
+		fmt.Println(brotherIndex)
 		brotherIndex--
 		if brotherIndex < len(node.Parent.Children) {
 			return node.Parent.Children[brotherIndex], brotherIndex

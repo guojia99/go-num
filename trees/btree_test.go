@@ -131,7 +131,7 @@ func newLoopTestBtree(deep int, loop int) Tree {
 	return ts
 }
 
-func TestBTree_Get_Size(t *testing.T) {
+func TestBTree_GetNode_Size(t *testing.T) {
 	ts := newBaseTestBtree()
 	/*
 					   8
@@ -168,6 +168,28 @@ func TestBTree_Get_Size(t *testing.T) {
 			gotValue := ts.GetNode(tt.key).Size()
 			if !reflect.DeepEqual(gotValue, tt.wantSize) {
 				t.Errorf("Get() gotValue = %v, want %v", gotValue, tt.wantSize)
+			}
+		})
+	}
+}
+
+func TestBTree_Remove(t *testing.T) {
+	ts := newBaseTestBtree()
+	tests := []struct {
+		key int
+	}{
+		{key: 10},
+		{key: 1},
+		{key: 11},
+		{key: 20},
+	}
+
+	for _, tt := range tests {
+		t.Run(fmt.Sprintf("romove_key-%d", tt.key), func(t *testing.T) {
+			ts.Remove(tt.key)
+			gotValue, gotFound := ts.Get(tt.key)
+			if gotFound {
+				t.Errorf("want value is `nil`, gotValue %+v", gotValue)
 			}
 		})
 	}
